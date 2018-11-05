@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="moku.concurrency.miaosha.dao.RedPackageMapper">
+    <select id="getAll" resultType="map">
+      select * from red_package;
+    </select>
+
+    <insert id="add" parameterType="map">
+        insert into red_package (createtime,amount,username) values (date_format(now(),'%Y-%m-%d %H:%i:%s'), #{amount}, #{userName})
+    </insert>
+
+</mapper>

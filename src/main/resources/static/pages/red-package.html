@@ -1,0 +1,82 @@
+<html>
+<div style="display:none">
+    <div class="RedPackage__Box js-RedPackageBox" data-txt>
+        <img src="/img/redPackage.png" alt="">
+    </div>
+</div>
+<div class="RedPackage__Main js-RedPackage" style="width:100%;height:100%"></div>
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script>
+    const $redPackage = $('.js-RedPackage');
+    const $redPackageBox = $('.js-RedPackageBox');
+    const redPackageWidth = $redPackage.width();
+    const redPackageBoxWidth = $redPackageBox.width();
+
+    const basePadding = 30;
+    const maxLeftPx = redPackageWidth - redPackageBoxWidth - basePadding * 2;
+
+
+    var zIndex = 1;
+
+    function bindEvent() {
+        $redPackage.on('click', '.js-RedPackageBox', function () {
+            /*拿到每个红包的数据*/
+            const data = $(this).data('txt');
+        });
+    }
+
+
+    function getRandom(min, max) {
+        return Math.round(Math.random() * (max - min) + min);
+    }
+
+
+    function redPackageBoxSpeed($el, time) {
+        $el.animate(
+            {
+                top: '130%',
+            },
+            time * 1000,
+            function () {
+                $el.remove();
+            }
+        );
+    }
+
+
+    function createRedPackageNode() {
+        var keyList = [];
+        var $newNode = $redPackageBox.clone(true);
+        var txt = "test";
+        keyList.push(txt);
+        $newNode.attr('data-txt', JSON.stringify(txt));
+
+
+        $newNode.css({
+            'z-index': zIndex++,
+            left: getRandom(basePadding, maxLeftPx) + 'px',
+            transform: 'rotate(' + getRandom(-30, 30) + 'deg)',
+        });
+        $redPackage.append($newNode);
+
+        redPackageBoxSpeed($newNode, 4);
+    }
+
+    function createRedPackageRain() {
+        setInterval(() => {
+            createRedPackageNode();
+        },300
+        );
+    }
+
+    function ready() {
+        bindEvent();
+        createRedPackageRain();
+    }
+
+    ready();
+</script>
+</html>
