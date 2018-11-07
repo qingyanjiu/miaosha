@@ -1,5 +1,6 @@
 package moku.concurrency.miaosha.controller;
 
+import moku.concurrency.miaosha.queue.Sender;
 import moku.concurrency.miaosha.service.IRedPackageService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class RedPackageController {
     @Autowired
     private IRedPackageService redPackageService;
 
+    @Autowired
+    private Sender sender;
+
     @RequestMapping("/index")
     public String index(){
         return "red-package";
@@ -39,11 +43,11 @@ public class RedPackageController {
     public Map add(String userName, int amount){
         Map result = new HashMap();
         String res = "success";
-        Map param = new HashMap();
-        param.put("userName",userName);
-        param.put("amount",amount);
+        Map params = new HashMap();
+        params.put("userName",userName);
+        params.put("amount",amount);
         try {
-            redPackageService.add(param);
+            sender.send(Sender.ROUTING_KEY_MIAOSHA_ADD,params);
         } catch (Exception e) {
             res = "failure";
             logger.error(e.getMessage());
