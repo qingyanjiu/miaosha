@@ -47,7 +47,7 @@ public class RedPackageController {
         params.put("userName",userName);
         params.put("amount",amount);
         try {
-            sender.send(Sender.ROUTING_KEY_MIAOSHA_ADD,params);
+            sender.send(Sender.QUEUE_NAME_MIAOSHA_ADD,params);
         } catch (Exception e) {
             res = "failure";
             logger.error(e.getMessage());

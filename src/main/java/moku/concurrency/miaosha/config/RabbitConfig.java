@@ -3,12 +3,18 @@ package moku.concurrency.miaosha.config;
 import moku.concurrency.miaosha.queue.MsgSendConfirmCallBack;
 import moku.concurrency.miaosha.queue.MsgSendReturnCallback;
 import moku.concurrency.miaosha.queue.Sender;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class RabbitConfig {
@@ -17,8 +23,36 @@ public class RabbitConfig {
     private ConnectionFactory connectionFactory;
 
     @Bean
-    public Queue queue() {
-        return new Queue(Sender.ROUTING_KEY_MIAOSHA_ADD);
+    public DirectExchange miaoshaExchange() {
+        return new DirectExchange("miaosha_exchange", true, false);
+    }
+    @Bean
+    public Queue miaoshaQueue() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("x-dead-letter-exchange", "dead_letter_exchange");//设置死信交换机，失败后消息发往死信交换机
+        map.put("x-dead-letter-routing-key", "mail_queue_fail");//设置死信routingKey,，失败后消息发往死信交换机的routingKey
+        Queue queue = new Queue(Sender.QUEUE_NAME_MIAOSHA_ADD,true, false, false, map);
+        return queue;
+    }
+    @Bean
+    public Binding miaoshaBinding() {
+        return BindingBuilder.bind(miaoshaQueue()).to(miaoshaExchange())
+                .with("miaosha_queue");
+    }
+
+    @Bean
+    public DirectExchange deadExchange() {
+        return new DirectExchange("dead_letter_exchange", true, false);
+    }
+    @Bean
+    public Queue deadQueue(){
+        Queue queue = new Queue("dead", true);
+        return queue;
+    }
+    @Bean
+    public Binding deadBinding() {
+        return BindingBuilder.bind(deadQueue()).to(deadExchange())
+                .with("mail_queue_fail");
     }
 
     @Bean
