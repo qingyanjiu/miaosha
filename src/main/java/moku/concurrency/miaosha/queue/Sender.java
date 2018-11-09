@@ -18,7 +18,11 @@ public class Sender {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public static final String QUEUE_NAME_MIAOSHA_ADD = "miaosha_add";
+    public static final String DIRECT_EXCHANGE_MIAOSHA_QUEUE_NAME_MIAOSHA_ADD = "miaosha_add";
+
+    public static final String DIRECT_EXCHANGE_MIAOSHA_ROUTING_KEY = "miaosha_queue";
+
+    public static final String DIRECT_EXCHANGE_MIAOSHA_NAME = "miaosha_exchange";
 
     public void send(String routingKey, Map params){
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
