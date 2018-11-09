@@ -19,7 +19,7 @@ public class Receiver {
     @Autowired
     private IRedPackageService redPackageService;
 
-    @RabbitListener(queues = Sender.DIRECT_EXCHANGE_MIAOSHA_QUEUE_NAME_MIAOSHA_ADD)
+    @RabbitListener(queues = Sender.DIRECT_EXCHANGE_MIAOSHA_ROUTING_KEY)
     public void receiveMiaoshaAddMessage(Map params, Message message, Channel channel) throws IOException {
         try {
             logger.debug("Receive:" + params);
