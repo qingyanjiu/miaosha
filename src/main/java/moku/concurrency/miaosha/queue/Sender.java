@@ -24,8 +24,8 @@ public class Sender {
 
     public static final String DIRECT_EXCHANGE_MIAOSHA_NAME = "miaosha_exchange";
 
-    public void send(String routingKey, Map params){
+    public void send(String exchangeName,String routingKey, Map params){
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
-        rabbitTemplate.convertAndSend(routingKey, params, correlationData);
+        rabbitTemplate.convertAndSend(exchangeName,routingKey, params, correlationData);
     }
 }

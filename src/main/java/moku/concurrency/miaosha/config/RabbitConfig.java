@@ -31,7 +31,7 @@ public class RabbitConfig {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("x-dead-letter-exchange", "dead_letter_exchange");//设置死信交换机，失败后消息发往死信交换机
         map.put("x-dead-letter-routing-key", "mail_queue_fail");//设置死信routingKey,，失败后消息发往死信交换机的routingKey
-        Queue queue = new Queue(Sender.DIRECT_EXCHANGE_MIAOSHA_ROUTING_KEY,true, false, false, map);
+        Queue queue = new Queue(Sender.DIRECT_EXCHANGE_MIAOSHA_QUEUE_NAME_MIAOSHA_ADD,true, false, false, map);
         return queue;
     }
     @Bean
