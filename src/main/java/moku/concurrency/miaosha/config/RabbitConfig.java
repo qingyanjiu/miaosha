@@ -27,7 +27,7 @@ public class RabbitConfig {
     public Queue miaoshaQueue() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("x-dead-letter-exchange", "dead_letter_exchange");//设置死信交换机，失败后消息发往死信交换机
-        map.put("x-dead-letter-routing-key", "mail_queue_fail");//设置死信routingKey,，失败后消息发往死信交换机的routingKey
+        map.put("x-dead-letter-routing-key", "mail_queue_fail");//设置死信routingKey,失败后消息发往死信交换机的routingKey
         Queue queue = new Queue(Sender.DIRECT_EXCHANGE_MIAOSHA_ROUTING_KEY,true, false, false, map);
         return queue;
     }
@@ -36,24 +36,6 @@ public class RabbitConfig {
         return BindingBuilder.bind(miaoshaQueue()).to(miaoshaExchange())
                 .with(Sender.DIRECT_EXCHANGE_MIAOSHA_ROUTING_KEY);
     }
-
-    @Bean
-    public FanoutExchange fanoutExchange() {
-        return new FanoutExchange(Sender.FANOUT_EXCHANGE_NAME, true, false);
-    }
-    @Bean
-    public Queue fanoutQueue() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("x-dead-letter-exchange", "dead_letter_exchange");//设置死信交换机，失败后消息发往死信交换机
-        map.put("x-dead-letter-routing-key", "mail_queue_fail");//设置死信routingKey,，失败后消息发往死信交换机的routingKey
-        Queue queue = new Queue(Sender.FANOUT_QUEUE_NAME,true, false, false, map);
-        return queue;
-    }
-    @Bean
-    public Binding fanoutBinding() {
-        return BindingBuilder.bind(fanoutQueue()).to(fanoutExchange());
-    }
-
 
     @Bean
     public DirectExchange deadExchange() {
@@ -101,5 +83,24 @@ public class RabbitConfig {
     MsgSendReturnCallback msgSendReturnCallback(){
         return new MsgSendReturnCallback();
     }
+
+
+//    @Bean
+//    public FanoutExchange fanoutExchange() {
+//        return new FanoutExchange(Sender.FANOUT_EXCHANGE_NAME, true, false);
+//    }
+//    @Bean
+//    public Queue fanoutQueue() {
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("x-dead-letter-exchange", "dead_letter_exchange");//设置死信交换机，失败后消息发往死信交换机
+//        map.put("x-dead-letter-routing-key", "mail_queue_fail");//设置死信routingKey,，失败后消息发往死信交换机的routingKey
+//        Queue queue = new Queue(Sender.FANOUT_QUEUE_NAME,true, false, false, map);
+//        return queue;
+//    }
+//    @Bean
+//    public Binding fanoutBinding() {
+//        return BindingBuilder.bind(fanoutQueue()).to(fanoutExchange());
+//    }
+
 
 }
