@@ -5,6 +5,7 @@ import moku.concurrency.miaosha.queue.MsgSendReturnCallback;
 import moku.concurrency.miaosha.queue.Sender;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,14 @@ public class RabbitConfig {
 
     @Autowired
     private ConnectionFactory connectionFactory;
+
+    @Bean
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
+        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
+        //设置忽略声明异常
+        rabbitAdmin.setIgnoreDeclarationExceptions(true);
+        return rabbitAdmin;
+    }
 
     @Bean
     public DirectExchange miaoshaExchange() {
