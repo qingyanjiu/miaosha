@@ -24,7 +24,7 @@ public class JedisTests {
             try {
                 List<byte[]> list = jedisUtil.brpop(3000, "test");
                 if (list != null && list.size() > 0) {
-                    System.out.println(list.get(1).toString());
+                    System.out.println(new String(list.get(1)));
                 }
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
