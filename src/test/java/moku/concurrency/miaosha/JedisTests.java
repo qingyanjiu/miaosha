@@ -1,5 +1,7 @@
 package moku.concurrency.miaosha;
 
+import moku.concurrency.miaosha.service.IRedPackageService;
+import moku.concurrency.miaosha.thread.MiaoshaThread;
 import moku.concurrency.miaosha.utils.JedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,5 +32,4 @@ public class JedisTests {
             }
         }
     }
-
 }

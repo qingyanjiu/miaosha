@@ -8,4 +8,6 @@ public interface IRedPackageService {
     List<Map> getAll();
 
     void add(Map params) throws Exception;
+
+    void miaosha();
 }

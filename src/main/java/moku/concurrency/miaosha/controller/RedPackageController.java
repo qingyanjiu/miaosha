@@ -2,6 +2,7 @@ package moku.concurrency.miaosha.controller;
 
 import moku.concurrency.miaosha.queue.Sender;
 import moku.concurrency.miaosha.service.IRedPackageService;
+import moku.concurrency.miaosha.thread.MiaoshaThread;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,17 @@ public class RedPackageController {
     @RequestMapping("/index")
     public String index(){
         return "red-package";
+    }
+
+    @RequestMapping("/testMiaosha")
+    @ResponseBody
+    public String testMiaosha(){
+        MiaoshaThread miaoshaThread = new MiaoshaThread(redPackageService);
+        for(int i=0;i<50;i++){
+            Thread thread = new Thread(miaoshaThread,"线程"+i);
+            thread.start();
+        }
+        return "OK";
     }
 
     @RequestMapping("/")

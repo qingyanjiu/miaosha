@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import java.io.*;
 import java.util.*;
 
 /**
@@ -28,6 +27,32 @@ public class JedisUtil {
         }
     }
 
+    public long expire(String key, int expireSecond) {
+        Jedis jedis = getJedis();
+        long result = 0;
+        try {
+            result = jedis.expire(key, expireSecond);
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            returnResource(jedis);
+        }
+        return result;
+    }
+
+    public long del(String key) {
+        Jedis jedis = getJedis();
+        long result = 0;
+        try {
+            result = jedis.del(key);
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            returnResource(jedis);
+        }
+        return result;
+    }
+
     //给某个key设值
     public void set(String key, String value) {
         Jedis jedis = getJedis();
@@ -41,6 +66,22 @@ public class JedisUtil {
             returnResource(jedis);
         }
 
+    }
+
+    //给某个key设值
+    public long setnx(String key, String value) {
+        Jedis jedis = getJedis();
+        long result = 0;
+        try {
+            byte[] keyBytes = key.getBytes();
+            byte[] valueBytes = value.getBytes();
+            result = jedis.setnx(keyBytes, valueBytes);
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            returnResource(jedis);
+        }
+        return result;
     }
 
     //根据key获取value
