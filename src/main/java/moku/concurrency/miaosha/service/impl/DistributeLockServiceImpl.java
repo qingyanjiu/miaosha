@@ -24,7 +24,7 @@ public class DistributeLockServiceImpl implements IDistributeLockService {
     public String getLock(String resourceId, int expireSecond) {
         Jedis conn = null;
         long endTime = System.currentTimeMillis() + expireSecond * 1000;
-        String retIdentifier = "";
+        String retIdentifier = null;
         try {
             // 获取连接
             conn = jedisPool.getResource();
@@ -33,7 +33,6 @@ public class DistributeLockServiceImpl implements IDistributeLockService {
                 long re = conn.setnx(resourceId, lockIdentifier);
                 if (re == 1) {
                     conn.expire(resourceId, LOCK_EXPIRE_SECOND);
-                    retIdentifier = lockIdentifier;
                     return lockIdentifier;
                 }
                 try {
@@ -42,6 +41,7 @@ public class DistributeLockServiceImpl implements IDistributeLockService {
                     Thread.currentThread().interrupt();
                 }
             }
+            System.out.println("获取锁失败，欧耶--"+Thread.currentThread().getName());
         } catch (JedisException e) {
             e.printStackTrace();
         } finally {

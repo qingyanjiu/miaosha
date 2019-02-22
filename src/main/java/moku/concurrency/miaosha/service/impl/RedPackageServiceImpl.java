@@ -26,22 +26,19 @@ public class RedPackageServiceImpl implements IRedPackageService {
     }
 
     @Override
-    public void add(Map params) throws Exception{
+    public void add(Map params) throws Exception {
         redPackageMapper.add(params);
     }
 
     @Override
     public void miaosha() {
         String identifier = "";
-        identifier = distributeLockService.getLock("1234567890",30);
-        System.out.println(Thread.currentThread().getName() + "获得了锁");
-        System.out.println(--n);
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        identifier = distributeLockService.getLock("1234567890", 10);
+        if (identifier != null) {
+            System.out.println(Thread.currentThread().getName() + "获得了锁");
+            System.out.println(--n);
+//            distributeLockService.releaseLock("1234567890", identifier);
         }
-        distributeLockService.releaseLock("1234567890", identifier);
     }
 
 
